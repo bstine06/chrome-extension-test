@@ -1,11 +1,10 @@
 chrome.tabs.onUpdated.addListener((tabId, tab) => {
-    if (tab.url && tab.url.includes("youtube.com/watch")) {
-      const queryParameters = tab.url.split("?")[1];
-      const urlParameters = new URLSearchParams(queryParameters);
+    if (tab.url && tab.url.includes("tiktok.com/@")) {
+      const userIdFromUrl = tab.url.split("@")[1];
+      console.log(userIdFromUrl);
   
       chrome.tabs.sendMessage(tabId, {
-        type: "NEW",
-        videoId: urlParameters.get("v"),
+        userId: userIdFromUrl
       });
     }
   });
