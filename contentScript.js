@@ -1,31 +1,23 @@
 (() => {
-    let tiktokDivShareFollowContainer;
     let currentUser = "";
 
     chrome.runtime.onMessage.addListener((obj, sender, response) => {
-        const {type, userId} = obj;
-
-        if (type === "NEW") {
-            currentUser = userId;
-            newUserAccessed();
-        }
+        const currentUser = obj.userId;
+        buttonPressed();
     });
 
-    const newUserAccessed = () => {
-        const downloadBtnExists = document.getElementsByClassName("download-btn")[0];
-
-        if (!downloadBtnExists) {
-            const downloadBtn = document.createElement("img");
-
-            downloadBtn.src = chrome.runtime.getUrl("assets/download.png");
-            downloadBtn.className = "download-btn";
-            downloadBtn.title = "Download all videos from this user";
-
-            tiktokDivShareFollowContainer = document.getElementsByClassName("tiktok-1xwagd1-DivShareFollowContainer")[0];
-            
-            tiktokDivShareFollowContainer.appendChild(downloadBtn);
+    const buttonPressed = () => {
+        
+        const results = [];
+        var urls = document.getElementsByTagName('a');
+        for (urlIndex in urls) {
+            const url = urls[urlIndex]
+            if(url.href && url.href.includes(currentUser) && url.href.indexOf('://')!==-1) {
+                results.push(url.href) // url.rel
+            }
         }
+        console.log(results);
     }
 
-    newUserAccessed();
+    pageLoaded();
 })();
